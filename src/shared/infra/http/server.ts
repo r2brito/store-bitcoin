@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import 'reflect-metadata';
 import 'express-async-errors';
 
@@ -24,11 +25,15 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 const PORT = process.env.PORT || 3000;
 
 (async () => {
+  console.log("Initializing database connection...");
   await AppDataSource.initialize().catch((err) => {
-    console.log("Error connecting to the database: ", err);
+    console.error("Error connecting to the database: ", err);
+    process.exit(1); // Encerre o processo se não conseguir conectar
   });
+
+  console.log("Database connected successfully!");
 
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-});
+})();
