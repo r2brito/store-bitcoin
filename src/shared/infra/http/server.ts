@@ -5,6 +5,7 @@ import express, { Request, Response, NextFunction } from "express";
 
 // Importing routes
 import routes from "./routes";
+import { AppDataSource } from '../typeorm/database/data-source';
 
 const app = express();
 
@@ -22,6 +23,12 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+(async () => {
+  await AppDataSource.initialize().catch((err) => {
+    console.log("Error connecting to the database: ", err);
+  });
+
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 });
