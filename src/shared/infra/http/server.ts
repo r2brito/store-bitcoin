@@ -6,6 +6,8 @@ import express, { Request, Response, NextFunction } from "express";
 
 // Importing routes
 import routes from "./routes";
+
+import '@shared/container';
 import { AppDataSource } from '../typeorm/database/data-source';
 
 const app = express();
