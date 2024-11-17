@@ -4,9 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
+import Account from '@modules/account/infra/typeorm/entities/Account';
 
 @Entity('users')
 class User {
@@ -22,6 +24,9 @@ class User {
   @Column()
   @Exclude()
   password: string;
+
+  @OneToMany(() => Account, (account) => account.user)
+  accounts: Account[];
 
   @CreateDateColumn()
   created_at: Date;
