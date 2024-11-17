@@ -8,6 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import User from '@modules/users/infra/typeorm/entities/User';
+import Transaction from '@modules/transactions/infra/typeorm/entities/Transaction';
 
 @Entity('accounts')
 class Account {
@@ -19,6 +20,9 @@ class Account {
 
   @Column({ type: 'decimal', precision: 18, scale: 8, default: 0 })
   balance: number;
+
+  @OneToMany(() => Transaction, (transaction) => transaction.account)
+  transactions: Transaction[];
 
   @CreateDateColumn()
   created_at: Date;

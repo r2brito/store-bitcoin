@@ -38,6 +38,12 @@ class AccountRepository implements IAccountRepository {
 
     return accounts;
   }
+
+  public async findByUserId(user_id: string): Promise<Account | null> {
+    const account = await this.ormRepository.findOneBy({ user: user_id });
+
+    return account;
+  }
 }
 
 export default AccountRepository;
