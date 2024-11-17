@@ -18,9 +18,9 @@ class UsersController {
 
     const listAllUsers = container.resolve(UsersService);
 
-    const user = await listAllUsers.index();
+    const users = await listAllUsers.index();
 
-    return res.status(200).json(user);
+    return res.status(200).json(users);
   }
 
   public async show(req: Request, res: Response): Promise<Response> {
