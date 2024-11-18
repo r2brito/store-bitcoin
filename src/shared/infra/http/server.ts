@@ -9,6 +9,7 @@ import routes from "./routes";
 
 import '@shared/container';
 import { AppDataSource } from '../typeorm/database/data-source';
+import AppError from '@shared/errors/AppError';
 
 const app = express();
 
@@ -17,12 +18,24 @@ app.use(express.json());
 app.use(routes);
 
 // Error handling middleware
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (res.headersSent) {
-    return next(err);
-  }
-  res.status(500).json({ error: err.message });
-});
+app.use(
+  (err: Error, _req: Request, res: Response, next: NextFunction) => {
+    if (err instanceof AppError) {
+      return res.status(err.statusCode).json({
+        status: 'error',
+        message: err.message,
+      });
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(err);
+
+    return res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  },
+);
 
 const PORT = process.env.PORT || 3000;
 

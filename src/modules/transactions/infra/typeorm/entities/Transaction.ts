@@ -11,8 +11,8 @@ import Account from '@modules/account/infra/typeorm/entities/Account';
 
 @Entity('transactions')
 class Transaction {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   type: string;

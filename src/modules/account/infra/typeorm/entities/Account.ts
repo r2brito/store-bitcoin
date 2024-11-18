@@ -12,13 +12,13 @@ import Transaction from '@modules/transactions/infra/typeorm/entities/Transactio
 
 @Entity('accounts')
 class Account {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @ManyToOne(() => User, (user) => user.accounts, { onDelete: 'CASCADE' })
   user: User;
 
-  @Column({ type: 'decimal', precision: 18, scale: 8, default: 0 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   balance: number;
 
   @OneToMany(() => Transaction, (transaction) => transaction.account)

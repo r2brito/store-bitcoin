@@ -1,4 +1,6 @@
 import { inject, injectable } from "tsyringe";
+import Decimal from 'decimal.js';
+
 import IAccountRepository from '@modules/account/repositories/IAccount.repository';
 import ITransactionRepository from '@modules/transactions/repositories/ITransaction.repository';
 import IUsersRepository from "@modules/users/repositories/IUsers.repository";
@@ -26,31 +28,34 @@ class TransactionService {
     this.accountRepository = accountRepository;
     this.transactionRepository = transactionRepository;
   }
-  public async execute(account_id: string, amount: number): Promise<Transaction> {
-    const accountExists = await this.accountRepository.findByUserId(account_id);
+  public async execute(user_id: string, amount: number): Promise<Transaction> {
+    const accountExists = await this.accountRepository.findByUserId(user_id);
 
     if (!accountExists) {
       throw new Error("Account not found");
     }
 
+    accountExists.balance = new Decimal(accountExists.balance).plus(amount).toNumber();
+
+    await this.accountRepository.save(accountExists);
 
     const user = await this.transactionRepository.create({ account: accountExists.id, amount, type: TransactionType.DEPOSIT });
 
     return user;
   }
 
-  public async index(): Promise<Account[]> {
+  public async index(): Promise<Transaction[]> {
 
-    const accounts = await this.accountRepository.findAll();
+    const accounts = await this.transactionRepository.findAll();
 
     return accounts;
   }
 
-  public async show(id: string): Promise<Account | undefined> {
-    const account = await this.accountRepository.findById(id);
+  public async show(id: string): Promise<Transaction | undefined> {
+    const account = await this.transactionRepository.findById(id);
 
     if (!account) {
-      throw new Error('Account not found');
+      throw new Error('Transaction not found');
     }
 
     return account;

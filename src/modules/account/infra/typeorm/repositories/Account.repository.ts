@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Equal, Repository } from 'typeorm';
 import { AppDataSource } from '@shared/infra/typeorm/database/data-source';
 
 import Account from '@modules/account/infra/typeorm/entities/Account';
@@ -40,7 +40,9 @@ class AccountRepository implements IAccountRepository {
   }
 
   public async findByUserId(user_id: string): Promise<Account | null> {
-    const account = await this.ormRepository.findOneBy({ user: user_id });
+    const account = await this.ormRepository.findOne({ where: { user: Equal(user_id) } });
+
+    console.log("Account: ", account)
 
     return account;
   }

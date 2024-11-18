@@ -21,8 +21,8 @@ export class AccountTable1731881141583 implements MigrationInterface {
           {
             name: 'balance',
             type: 'decimal',
-            precision: 18,
-            scale: 8,
+            precision: 10,
+            scale: 2,
             default: '0',
           },
           {
