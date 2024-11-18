@@ -63,13 +63,25 @@ docker run --name postgres_bitcoin \
 npm install
 ```
 
+or
+
+```
+yarn install
+```
+
 4. Set up the .env file:
 
 ```
 cp .env.example .env
 ```
 
-5. Start the application:
+5. Migration run
+
+```
+yarn typeorm migration:run -- -d src/shared/infra/typeorm/database/data-source.ts
+```
+
+6. Start the application:
 
 ```
 npm run start
